@@ -1,0 +1,1360 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Design Mode</title>
+  <style>
+    @font-face {
+      font-family: 'Inter';
+      src: url('../assets/fonts/InterVariable.woff2') format('woff2');
+      font-style: normal;
+      font-weight: 100 900;
+      font-display: swap;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── CSS Custom Properties (shadcn preset b1D0dv86 + dm-* mappings) ── */
+    :root[data-theme="dark"] {
+      /* shadcn tokens — dark */
+      --background: oklch(0.30 0 0);
+      --foreground: oklch(0.90 0 0);
+      --primary: oklch(0.922 0 0);
+      --primary-foreground: oklch(0.205 0 0);
+      --secondary: oklch(0.269 0 0);
+      --secondary-foreground: oklch(0.985 0 0);
+      --muted: oklch(0.269 0 0);
+      --muted-foreground: oklch(0.708 0 0);
+      --accent: oklch(0.269 0 0);
+      --accent-foreground: oklch(0.985 0 0);
+      --destructive: oklch(0.704 0.191 22.216);
+      --border: oklch(1 0 0 / 10%);
+      --input: oklch(1 0 0 / 15%);
+      --ring: #0d99ff;
+      --radius: 0rem;
+
+      /* dm-* mapped to shadcn tokens */
+      --dm-bg: oklch(0.292 0 0);
+      --dm-bg-secondary: oklch(1 0 0 / 4%);
+      --dm-bg-tertiary: oklch(1 0 0 / 6%);
+      --dm-bg-active: oklch(1 0 0 / 8%);
+      --dm-text: oklch(1 0 0);
+      --dm-text-secondary: oklch(0.76 0 0);
+      --dm-text-muted: oklch(0.805 0 0);
+      --dm-text-dim: oklch(0.56 0 0);
+      --dm-text-dimmer: oklch(0.45 0 0);
+      --dm-input-bg: oklch(1 0 0 / 4%);
+      --dm-input-border: oklch(1 0 0 / 10%);
+      --dm-input-border-hover: oklch(1 0 0 / 18%);
+      --dm-separator: oklch(1 0 0 / 6%);
+      --dm-separator-strong: oklch(1 0 0 / 10%);
+      --dm-accent: #0d99ff;
+      --dm-accent-bg: rgba(13,153,255,0.14);
+      --dm-accent-border: rgba(13,153,255,0.30);
+      --dm-danger: oklch(0.704 0.191 22.216);
+      --dm-danger-bg: oklch(0.704 0.191 22.216 / 10%);
+      --dm-danger-border: oklch(0.704 0.191 22.216 / 22%);
+      --dm-success: #22c55e;
+      --dm-success-bg: rgba(34,197,94,0.2);
+      --dm-purple: #8b5cf6;
+      --dm-purple-bg: rgba(139,92,246,0.06);
+      --dm-purple-border: rgba(139,92,246,0.25);
+      --dm-yellow: #FBBF24;
+      --dm-btn-bg: oklch(1 0 0 / 6%);
+      --dm-btn-border: oklch(1 0 0 / 10%);
+      --dm-btn-bg-disabled: oklch(1 0 0 / 3%);
+      --dm-btn-border-disabled: oklch(1 0 0 / 5%);
+      --dm-scrollbar-thumb: oklch(1 0 0 / 10%);
+      --dm-scrollbar-thumb-hover: oklch(1 0 0 / 20%);
+      /* Contrast checker — rating tier colours (dark theme). */
+      --dm-rating-excellent: #22c55e;
+      --dm-rating-good: #84cc16;
+      --dm-rating-poor: #f59e0b;
+      --dm-rating-very-poor: #ef4444;
+
+      /* Native <select> popups (Linux Chrome especially) follow color-scheme. */
+      color-scheme: dark;
+    }
+    .dm-overlay-page {
+      --dm-text-muted: var(--dm-text-secondary);
+      --dm-text-dim: var(--dm-text-secondary);
+      --dm-text-dimmer: var(--dm-text-secondary);
+    }
+    :root[data-theme="light"] {
+      /* shadcn tokens — light */
+      --background: oklch(1 0 0);
+      --foreground: oklch(0.145 0 0);
+      --primary: oklch(0.205 0 0);
+      --primary-foreground: oklch(0.985 0 0);
+      --secondary: oklch(0.97 0 0);
+      --secondary-foreground: oklch(0.205 0 0);
+      --muted: oklch(0.97 0 0);
+      --muted-foreground: oklch(0.556 0 0);
+      --accent: oklch(0.97 0 0);
+      --accent-foreground: oklch(0.205 0 0);
+      --destructive: oklch(0.577 0.245 27.325);
+      --border: oklch(0.922 0 0);
+      --input: oklch(0.922 0 0);
+      --ring: #0d99ff;
+      --radius: 0rem;
+
+      /* dm-* mapped to shadcn tokens */
+      --dm-bg: oklch(1 0 0);
+      --dm-bg-secondary: oklch(0 0 0 / 4%);
+      --dm-bg-tertiary: oklch(0 0 0 / 5%);
+      --dm-bg-active: oklch(0 0 0 / 8%);
+      --dm-text: oklch(0.145 0 0);
+      --dm-text-secondary: oklch(0.40 0 0);
+      --dm-text-muted: oklch(0.556 0 0);
+      --dm-text-dim: oklch(0.556 0 0);
+      --dm-text-dimmer: oklch(0.72 0 0);
+      --dm-input-bg: oklch(0 0 0 / 4%);
+      --dm-input-border: oklch(0.922 0 0);
+      --dm-input-border-hover: oklch(0 0 0 / 18%);
+      --dm-separator: oklch(0 0 0 / 8%);
+      --dm-separator-strong: oklch(0 0 0 / 10%);
+      --dm-accent: #0d99ff;
+      --dm-accent-bg: rgba(13,153,255,0.12);
+      --dm-accent-border: rgba(13,153,255,0.25);
+      --dm-danger: oklch(0.577 0.245 27.325);
+      --dm-danger-bg: oklch(0.577 0.245 27.325 / 8%);
+      --dm-danger-border: oklch(0.577 0.245 27.325 / 18%);
+      --dm-success: #22c55e;
+      --dm-success-bg: rgba(34,197,94,0.15);
+      --dm-purple: #8b5cf6;
+      --dm-purple-bg: rgba(139,92,246,0.04);
+      --dm-purple-border: rgba(139,92,246,0.2);
+      --dm-yellow: #FBBF24;
+      --dm-btn-bg: oklch(0 0 0 / 5%);
+      --dm-btn-border: oklch(0.922 0 0);
+      --dm-btn-bg-disabled: oklch(0 0 0 / 2%);
+      --dm-btn-border-disabled: oklch(0 0 0 / 5%);
+      --dm-scrollbar-thumb: oklch(0 0 0 / 12%);
+      --dm-scrollbar-thumb-hover: oklch(0 0 0 / 20%);
+      /* Contrast checker — rating tier colours (light theme; slightly darker
+         to retain legibility against the off-white panel background). */
+      --dm-rating-excellent: #16a34a;
+      --dm-rating-good: #65a30d;
+      --dm-rating-poor: #d97706;
+      --dm-rating-very-poor: #dc2626;
+
+      color-scheme: light;
+    }
+
+    html, body {
+      width: 100%; height: 100%; overflow: hidden;
+      min-width: 0;
+      background: var(--dm-bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 13px;
+      color: var(--dm-text);
+    }
+    @media (max-width: 319px) {
+      .dm-handoff-actions { flex-direction: column; }
+    }
+    body { display: flex; flex-direction: column; }
+    #dm-root { flex: 1; overflow-y: auto; overflow-x: hidden; }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--dm-scrollbar-thumb); border-radius: 3px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--dm-scrollbar-thumb-hover); }
+    input, select, button, textarea { font-family: inherit; }
+    /* Closed <select> is styled; the OS popup still needs explicit option
+       colours so Linux Chrome dark mode is not black-on-black. Keep native
+       <select> (no custom listbox) so keyboard / AT behaviour stays intact. */
+    select option,
+    select optgroup {
+      background-color: var(--dm-bg);
+      color: var(--dm-text);
+    }
+    input[type="color"] { -webkit-appearance: none; border: none; }
+    input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+    input[type="color"]::-webkit-color-swatch { border: none; border-radius: 3px; }
+
+    /* ── Utility classes ── */
+    .dm-input {
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 5px;
+      color: var(--dm-text);
+      font-size: 11px;
+      padding: 6px;
+      outline: none;
+      font-family: inherit;
+      transition: border-color 0.12s ease;
+    }
+    .dm-input:hover { border-color: var(--dm-input-border-hover); }
+    .dm-input:focus { border-color: var(--dm-accent); }
+
+    /* Lists inside the rich-text editor — show markers and don't push the
+       text away from the editor edge. Inside-positioned markers keep the
+       bullet/number visible on the dark sidepanel background. */
+    [data-dm-richtext] ul, [data-dm-richtext] ol {
+      margin: 4px 0;
+      padding-left: 22px;
+      list-style-position: outside;
+    }
+    [data-dm-richtext] ul { list-style-type: disc; }
+    [data-dm-richtext] ol { list-style-type: decimal; }
+    [data-dm-richtext] li { line-height: 1.5; padding-left: 2px; }
+    [data-dm-richtext] a { color: var(--dm-accent); text-decoration: underline; }
+
+    /* Filter sliders — uniform gray track from end to end with just the
+       accent-colored round thumb (no progressive blue fill, since these
+       sliders are bipolar / neutral-centered, not 0→x meters). */
+    .dm-fslider {
+      -webkit-appearance: none;
+      appearance: none;
+      background: transparent;
+      height: 14px;
+      cursor: ew-resize;
+      padding: 0;
+      margin: 0;
+    }
+    .dm-fslider::-webkit-slider-runnable-track {
+      height: 3px;
+      background: var(--dm-input-border);
+      border-radius: 2px;
+    }
+    .dm-fslider::-moz-range-track {
+      height: 3px;
+      background: var(--dm-input-border);
+      border-radius: 2px;
+    }
+    .dm-fslider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--dm-accent);
+      border: 2px solid var(--dm-bg);
+      margin-top: -5px;
+      cursor: ew-resize;
+      box-shadow: 0 0 0 1px var(--dm-input-border-hover);
+    }
+    .dm-fslider::-moz-range-thumb {
+      width: 13px; height: 13px; border-radius: 50%;
+      background: var(--dm-accent);
+      border: 2px solid var(--dm-bg);
+      cursor: ew-resize;
+      box-shadow: 0 0 0 1px var(--dm-input-border-hover);
+    }
+    .dm-fslider::-moz-range-progress { background: transparent; }
+    .dm-select {
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 5px;
+      color: var(--dm-text);
+      font-size: 11px;
+      padding: 6px;
+      outline: none;
+      cursor: pointer;
+      -webkit-appearance: none;
+      transition: border-color 0.12s ease;
+    }
+    .dm-select:hover { border-color: var(--dm-input-border-hover); }
+    .dm-select:focus { border-color: var(--dm-accent); }
+    .dm-btn {
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      border-radius: 5px;
+      color: var(--dm-text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 5px 7px;
+      transition: background-color 0.12s ease, border-color 0.12s ease;
+    }
+    .dm-btn:hover { background: var(--dm-bg-tertiary); border-color: var(--dm-input-border-hover); }
+    .dm-btn:disabled, .dm-btn[data-disabled="true"] {
+      background: var(--dm-btn-bg-disabled);
+      border-color: var(--dm-btn-border-disabled);
+      color: var(--dm-text-dim);
+      cursor: default;
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    /* ── Figma-style Design tab vocabulary ── */
+    /* Icon button rows (alignment, flip, layout-mode segmented). Each item
+       uses [data-active="true"] for the selected state — the same pattern
+       Figma uses for its segmented controls. */
+    .dm-icon-row {
+      display: flex;
+      gap: 2px;
+    }
+    .dm-icon-row-button {
+      flex: 1;
+      padding: 6px;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 5px;
+      color: var(--dm-text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background-color 0.12s ease, border-color 0.12s ease, color 0.12s ease;
+    }
+    .dm-icon-row-button:hover {
+      background: var(--dm-bg-tertiary);
+      border-color: var(--dm-input-border-hover);
+    }
+    .dm-icon-row-button[data-active="true"] {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+
+    /* Segmented control — same idea as icon-row but with shared background
+       and tighter visuals. Used for stroke position (Inside/Outside/Center)
+       and layout-mode (Free/HStack/VStack/Grid). */
+    .dm-segmented {
+      display: flex;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 5px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .dm-segmented-item {
+      flex: 1;
+      padding: 5px 6px;
+      border-radius: 3px;
+      cursor: pointer;
+      color: var(--dm-text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      font-size: 11px;
+      transition: background-color 0.12s ease, color 0.12s ease;
+      border: none;
+      background: none;
+      font-family: inherit;
+    }
+    .dm-segmented-item:hover {
+      color: var(--dm-text-secondary);
+    }
+    .dm-segmented-item[data-active="true"] {
+      background: var(--dm-bg-active);
+      color: var(--dm-text);
+    }
+
+    /* Section header action cluster (eye / + / advanced / reset). Sits to
+       the right of the title and inherits the section header's pointer
+       events but stops propagation so clicking an action doesn't toggle
+       the section open/closed. */
+    .dm-section-actions {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      flex-shrink: 0;
+    }
+    .dm-section-action {
+      background: none;
+      border: none;
+      color: var(--dm-text-dim);
+      cursor: pointer;
+      padding: 2px;
+      display: flex;
+      border-radius: 3px;
+      transition: color 0.12s ease, background-color 0.12s ease;
+    }
+    .dm-section-action:hover {
+      color: var(--dm-text);
+      background: var(--dm-bg-secondary);
+    }
+    .dm-section-action[data-active="true"] {
+      color: var(--dm-accent);
+    }
+
+    /* Popovers (sides-toggle, effects-add, blend-mode picker, stroke-style).
+       Anchored under the trigger button by the parent's positioning. */
+    .dm-popover {
+      position: absolute;
+      top: calc(100% + 4px);
+      right: 0;
+      min-width: 180px;
+      background: var(--dm-bg);
+      border: 1px solid var(--dm-separator-strong);
+      border-radius: 6px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+      z-index: 30;
+      padding: 6px;
+    }
+    .dm-popover-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 11px;
+      color: var(--dm-text);
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: left;
+      font-family: inherit;
+    }
+    .dm-popover-item:hover {
+      background: var(--dm-bg-secondary);
+    }
+    .dm-popover-item[data-active="true"] {
+      color: var(--dm-accent);
+    }
+    .dm-popover-divider {
+      height: 1px;
+      background: var(--dm-separator);
+      margin: 4px 0;
+    }
+
+    /* ── Contrast checker row (inside the colour picker, above the SV) ── */
+    .dm-contrast-row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 4px 0 10px 0;
+      font-size: 11px;
+    }
+    .dm-contrast-chip {
+      width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      border: 1px solid var(--dm-separator-strong);
+      flex-shrink: 0;
+    }
+    .dm-contrast-ratio {
+      font-family: inherit;
+      font-size: 11px;
+      color: var(--dm-text);
+      letter-spacing: 0.2px;
+    }
+    .dm-contrast-rating {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+      color: var(--rating-color, var(--dm-text));
+      background: color-mix(in srgb, var(--rating-color, transparent) 16%, transparent);
+      cursor: help;
+    }
+    .dm-contrast-rating[data-rating="excellent"] { --rating-color: var(--dm-rating-excellent); }
+    .dm-contrast-rating[data-rating="good"]      { --rating-color: var(--dm-rating-good); }
+    .dm-contrast-rating[data-rating="poor"]      { --rating-color: var(--dm-rating-poor); }
+    .dm-contrast-rating[data-rating="very-poor"] { --rating-color: var(--dm-rating-very-poor); }
+    .dm-contrast-spacer { flex: 1; }
+    /* AA / AAA segmented tabs — pass/fail per level visible at all times,
+       active tab is the user's selected target Level. */
+    .dm-contrast-tabs {
+      display: inline-flex;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 5px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .dm-contrast-tab {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 6px;
+      background: none;
+      border: none;
+      border-radius: 3px;
+      font-size: 10px;
+      font-weight: 600;
+      color: var(--dm-text-muted);
+      cursor: pointer;
+      font-family: inherit;
+      transition: background-color 0.12s ease, color 0.12s ease;
+    }
+    .dm-contrast-tab[data-pass="true"]  { color: var(--dm-rating-excellent); }
+    .dm-contrast-tab[data-pass="false"] { color: var(--dm-rating-very-poor); }
+    .dm-contrast-tab:hover { background: color-mix(in srgb, currentColor 10%, transparent); }
+    .dm-contrast-tab[data-active="true"] {
+      background: color-mix(in srgb, currentColor 16%, transparent);
+    }
+    .dm-contrast-tab-label { line-height: 1; letter-spacing: 0.2px; }
+    .dm-contrast-settings-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      border-radius: 4px;
+      color: var(--dm-text-secondary);
+      cursor: pointer;
+    }
+    .dm-contrast-settings-btn:hover { background: var(--dm-bg-secondary); color: var(--dm-text); }
+    .dm-contrast-settings-btn[data-active="true"] {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+    .dm-contrast-settings {
+      top: calc(100% + 2px);
+      right: 0;
+      min-width: 220px;
+    }
+    .dm-contrast-section-header {
+      padding: 4px 8px 2px 8px;
+      font-size: 9px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--dm-text-dim);
+    }
+    .dm-contrast-suggest {
+      flex: 1 0 100%;
+      margin-top: 2px;
+      height: 24px;
+      padding: 0 8px;
+      border-radius: 5px;
+      border: 1px solid var(--dm-accent-border);
+      background: var(--dm-accent-bg);
+      color: var(--dm-accent);
+      font-size: 10px;
+      font-weight: 600;
+      font-family: inherit;
+      cursor: pointer;
+      text-align: left;
+    }
+    .dm-contrast-suggest:hover { filter: brightness(1.08); }
+    .dm-page-states {
+      display: flex;
+      gap: 4px;
+      padding: 6px 12px 8px 12px;
+      border-bottom: 1px solid var(--dm-separator);
+    }
+    .dm-page-state-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      height: 22px;
+      padding: 0 7px;
+      border-radius: 999px;
+      border: 1px solid var(--dm-btn-border);
+      background: var(--dm-btn-bg);
+      color: var(--dm-text-secondary);
+      font-size: 10px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .dm-page-state-btn:hover { color: var(--dm-text); }
+    .dm-page-state-btn[data-active="true"] {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+    .dm-page-state-count {
+      font-size: 9px;
+      opacity: 0.75;
+    }
+    .dm-computed-layout-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      width: 100%;
+      height: 28px;
+      padding: 0 8px;
+      border-radius: 5px;
+      border: 1px solid var(--dm-btn-border);
+      background: var(--dm-btn-bg);
+      color: var(--dm-text-secondary);
+      font-size: 11px;
+      font-family: inherit;
+      cursor: pointer;
+    }
+    .dm-computed-layout-toggle[data-active="true"] {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+
+    /* ── Tokens / Design-system panel ── */
+    .dm-token-io-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      height: 24px;
+      padding: 0 6px;
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      border-radius: 4px;
+      color: var(--dm-text-secondary);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 10px;
+    }
+    .dm-token-io-btn:hover { background: var(--dm-bg-secondary); color: var(--dm-text); }
+    .dm-token-io-btn-labelled { padding: 0 8px; }
+    /* Bare icon-only IO button (e.g. Rescan) stays compact and square. */
+    .dm-token-io-btn:not(.dm-token-io-btn-labelled) {
+      width: 24px;
+      padding: 0;
+    }
+    .dm-token-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 3px 8px;
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      border-radius: 9999px;
+      color: var(--dm-text-secondary);
+      cursor: pointer;
+      font-size: 9px;
+      font-family: inherit;
+      font-weight: 500;
+      letter-spacing: 0.2px;
+      transition: background-color 0.12s ease, color 0.12s ease, border-color 0.12s ease;
+    }
+    .dm-token-chip:hover { color: var(--dm-text); }
+    .dm-token-chip[data-active="true"] {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+    .dm-token-chip-count {
+      font-family: inherit;
+      font-size: 9px;
+      opacity: 0.7;
+    }
+    .dm-token-group { padding: 0; }
+    .dm-token-group-header {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px 6px;
+      position: sticky;
+      top: 0;
+      background: var(--dm-bg);
+      z-index: 2;
+      /* Two-px shadow below the sticky header so the boundary between the
+         header and the scrolling rows is clean even when a row partially
+         scrolls into the header's vertical band. */
+      box-shadow: 0 1px 0 var(--dm-separator);
+    }
+    .dm-token-group-label {
+      font-size: 9px;
+      letter-spacing: 0.4px;
+      text-transform: uppercase;
+      color: var(--dm-text-dim);
+    }
+    .dm-token-row { padding: 4px 12px; }
+    .dm-token-uses[data-unused="true"] {
+      color: var(--dm-text-dim);
+      cursor: default;
+      background: transparent;
+      border-color: var(--dm-separator);
+    }
+
+    /* ── Tokens panel — tab strip ── */
+    .dm-tokens-tabs {
+      padding: 6px 10px;
+      border-bottom: 1px solid var(--dm-separator);
+      flex-shrink: 0;
+    }
+    .dm-tokens-tabs .dm-segmented-item {
+      gap: 6px;
+    }
+    .dm-tokens-tab-count {
+      font-family: inherit;
+      font-size: 9px;
+      opacity: 0.7;
+    }
+    .dm-tokens-empty {
+      text-align: center;
+      padding: 32px 16px;
+      color: var(--dm-text-dim);
+      font-size: 11px;
+      line-height: 1.6;
+    }
+
+    /* ── Defined tab — Add CTA + inline form + preset rows ── */
+    .dm-defined-cta { padding: 10px 12px; }
+    .dm-defined-add-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      background: var(--dm-accent-bg);
+      border: 1px solid var(--dm-accent-border);
+      border-radius: 5px;
+      color: var(--dm-accent);
+      font-family: inherit;
+      font-size: 11px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .dm-defined-add-btn[disabled] {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: var(--dm-btn-bg);
+      border-color: var(--dm-btn-border);
+      color: var(--dm-text-dim);
+    }
+    .dm-defined-add-form {
+      padding: 10px 12px;
+      border-bottom: 1px solid var(--dm-separator);
+      background: var(--dm-bg-secondary);
+    }
+    .dm-defined-kind {
+      flex: 0 0 110px;
+      font-size: 10px;
+      padding: 5px 6px;
+    }
+    .dm-defined-name {
+      flex: 1;
+      min-width: 0;
+      font-size: 10px;
+      padding: 5px 7px;
+    }
+    .dm-defined-form-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-family: inherit;
+      font-size: 10px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    .dm-defined-form-cancel {
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      color: var(--dm-text-secondary);
+    }
+    .dm-defined-form-save {
+      background: var(--dm-accent-bg);
+      border: 1px solid var(--dm-accent-border);
+      color: var(--dm-accent);
+    }
+    .dm-defined-list { padding: 4px 0; }
+    .dm-preset-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+    }
+    .dm-preset-row:hover { background: var(--dm-bg-secondary); }
+    .dm-preset-name {
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-size: 11px;
+      color: var(--dm-text);
+    }
+    .dm-preset-apply {
+      padding: 3px 9px;
+      background: var(--dm-accent-bg);
+      border: 1px solid var(--dm-accent-border);
+      border-radius: 3px;
+      color: var(--dm-accent);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 9px;
+      flex-shrink: 0;
+    }
+    .dm-preset-apply[disabled] {
+      opacity: 0.45;
+      cursor: not-allowed;
+      background: var(--dm-btn-bg);
+      border-color: var(--dm-btn-border);
+      color: var(--dm-text-dim);
+    }
+    .dm-preset-delete {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 22px;
+      height: 22px;
+      padding: 0;
+      background: var(--dm-danger-bg);
+      border: 1px solid var(--dm-danger-border);
+      border-radius: 3px;
+      color: var(--dm-danger);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+    .dm-preset-applied {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      padding: 3px 9px;
+      background: var(--dm-danger-bg);
+      border: 1px solid var(--dm-danger-border);
+      border-radius: 3px;
+      color: var(--dm-danger);
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 9px;
+      flex-shrink: 0;
+    }
+
+    /* Detected-tab — "Replace with…" dropdown. Compact to match the
+       count badge to its right. */
+    .dm-detected-replace {
+      flex-shrink: 0;
+      max-width: 170px;
+      font-size: 9px;
+      padding: 3px 4px;
+      font-family: inherit;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      color: var(--dm-text-secondary);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .dm-detected-replace:hover {
+      color: var(--dm-text);
+      border-color: var(--dm-accent-border);
+    }
+    .dm-token-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 12px;
+      transition: background-color 0.12s ease;
+    }
+    .dm-token-row:hover { background: var(--dm-bg-secondary); }
+    .dm-token-row-readonly:hover { background: transparent; cursor: default; }
+    /* Row jumped to from a field's "Edit token globally" action. */
+    .dm-token-row[data-dm-token-focused="true"] {
+      background: var(--dm-accent-bg);
+      box-shadow: inset 2px 0 0 var(--dm-accent);
+    }
+    /* Selector a token is declared on — shown when it isn't :root. */
+    .dm-token-scope-chip {
+      flex-shrink: 0;
+      max-width: 84px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      padding: 0 4px;
+      border-radius: 3px;
+      background: var(--dm-bg-tertiary, var(--dm-bg-secondary));
+      color: var(--dm-text-muted);
+      font-family: inherit;
+      font-size: 8px;
+      line-height: 1.6;
+    }
+    .dm-token-scope-chip[data-inactive="true"] { opacity: 0.5; font-style: italic; }
+    .dm-token-name {
+      flex: 0 0 30%;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-family: inherit;
+      font-size: 10px;
+      color: var(--dm-text);
+    }
+    .dm-token-name-detected { font-family: inherit; color: var(--dm-text-secondary); }
+    .dm-token-value {
+      flex: 1;
+      min-width: 0;
+      font-size: 10px;
+      padding: 4px 6px;
+      font-family: inherit;
+    }
+    .dm-token-uses {
+      flex-shrink: 0;
+      padding: 3px 7px;
+      font-size: 9px;
+      font-family: inherit;
+      color: var(--dm-text-secondary);
+      background: var(--dm-btn-bg);
+      border: 1px solid var(--dm-btn-border);
+      border-radius: 3px;
+      cursor: pointer;
+    }
+    .dm-token-uses:hover { color: var(--dm-accent); border-color: var(--dm-accent-border); }
+    .dm-token-uses[data-active="true"] {
+      color: var(--dm-accent);
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent);
+    }
+    .dm-token-reset {
+      flex-shrink: 0;
+      width: 20px;
+      height: 20px;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--dm-accent-bg);
+      border: 1px solid var(--dm-accent-border);
+      border-radius: 3px;
+      color: var(--dm-accent);
+      cursor: pointer;
+    }
+    .dm-token-reset-placeholder { flex-shrink: 0; width: 20px; height: 20px; }
+    .dm-token-count {
+      flex-shrink: 0;
+      margin-left: auto;
+      font-size: 9px;
+      color: var(--dm-text-dim);
+      font-family: inherit;
+    }
+    .dm-token-drift {
+      flex-shrink: 0;
+      display: inline-flex;
+      align-items: center;
+      gap: 2px;
+      padding: 2px 6px;
+      font-size: 9px;
+      font-family: inherit;
+      color: #f59e0b;
+      background: rgba(245, 158, 11, 0.14);
+      border-radius: 9999px;
+    }
+
+    /* Corner radius grid — linked input on top, 2x2 individual corners
+       below. Each corner input is small and labelled with a corner glyph. */
+    .dm-corner-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 6px;
+    }
+
+    /* Advanced toggle — small icon button in section headers that switches
+       the active state of an advanced/disclosure region below. */
+    .dm-advanced-toggle[data-open="true"] {
+      color: var(--dm-accent);
+      background: var(--dm-accent-bg);
+    }
+
+    /* ── Transitions (Phase 4B) ── */
+    .dm-layer-item {
+      transition: background-color 0.12s ease, opacity 0.2s ease;
+    }
+    .dm-layer-item:hover {
+      background-color: var(--dm-bg-secondary) !important;
+    }
+    .dm-section-body {
+      transition: max-height 0.2s ease, opacity 0.15s ease, padding-bottom 0.15s ease;
+      overflow: hidden;
+    }
+    .dm-section-body.dm-collapsed {
+      max-height: 0 !important;
+      opacity: 0;
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+    }
+    .dm-section-body.dm-expanded {
+      opacity: 1;
+    }
+
+    /* ── Layer hover actions ── */
+    .dm-layer-item .dm-layer-drag,
+    .dm-layer-item .dm-layer-hover-actions {
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .dm-layer-item:hover .dm-layer-drag,
+    .dm-layer-item:hover .dm-layer-hover-actions {
+      opacity: 1;
+    }
+    /* Drop indicator for layer drag-drop — Keynote-style "insertion bar".
+       A single floating line element (#dm-drop-indicator) is positioned
+       on every dragover frame to snap precisely between rows. The line's
+       horizontal `left` matches the destination depth (each indent step
+       is 16px), so the user can read the depth from the line itself.
+       For a "drop INTO target as a child" gesture the line indents one
+       extra level AND the target row gets an accent-tinted highlight to
+       say "this row becomes the parent." */
+    #dm-drop-indicator {
+      position: fixed;
+      height: 3px;
+      background: var(--dm-accent);
+      border-radius: 999px;
+      box-shadow: 0 0 0 1px var(--dm-bg), 0 0 6px rgba(79, 158, 255, 0.5);
+      pointer-events: none;
+      z-index: 9999;
+      display: none;
+      transition: top 80ms ease, left 80ms ease, width 80ms ease;
+    }
+    #dm-drop-indicator::before,
+    #dm-drop-indicator::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--dm-accent);
+      transform: translateY(-50%);
+    }
+    #dm-drop-indicator::before { left: -2px; }
+    #dm-drop-indicator::after  { right: -2px; }
+    .dm-layer-item.dm-drop-parent {
+      background: var(--dm-accent-bg) !important;
+      box-shadow: inset 0 0 0 1px var(--dm-accent-border);
+    }
+
+    /* ── Changes revert button ── */
+    .dm-change-item .dm-change-revert {
+      opacity: 0;
+      transition: opacity 0.15s;
+    }
+    .dm-change-item:hover .dm-change-revert {
+      opacity: 1;
+    }
+
+    /* ── Indentation guides ── */
+    .dm-indent-guide {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 1px;
+      background: var(--dm-separator);
+    }
+
+    /* ── Layer search ── */
+    .dm-layer-search {
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 6px;
+      color: var(--dm-text);
+      font-size: 11px;
+      padding: 6px 8px 6px 28px;
+      outline: none;
+      width: 100%;
+      transition: border-color 0.12s ease;
+    }
+    .dm-layer-search:hover { border-color: var(--dm-input-border-hover); }
+    .dm-layer-search:focus { border-color: var(--dm-accent); }
+    .dm-layer-search::placeholder { color: var(--dm-text-dim); }
+
+    /* ── Changes group card ── */
+    .dm-change-group {
+      border-bottom: 1px solid var(--dm-separator);
+    }
+    .dm-change-group-header {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 12px;
+      cursor: pointer;
+      user-select: none;
+      transition: background-color 0.12s ease;
+    }
+    .dm-change-group-header:hover {
+      background: var(--dm-bg-secondary);
+    }
+
+    /* ── Animations ── */
+    @keyframes dm-pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+    /* ── High-frequency Design-tab atoms.
+       Every input row, dropdown, sub-section header, grid, and spacer in the
+       Design tab used to ship its own ~10-property inline `style="…"` blob.
+       These classes back the `inp` / `inpKw` / `sel` / `sub` / `grid` / `sp`
+       helpers — same visuals, ~1.5k fewer lines of generated markup. */
+    .dm-field { display: flex; flex-direction: column; gap: 3px; min-width: 0; position: relative; }
+    /* Token badge — the ◆ pill on fields whose value comes from a design
+       token. Opens the swap / edit-globally / detach menu. */
+    .dm-token-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 3px;
+      flex-shrink: 0;
+      max-width: 96px;
+      margin-right: 4px;
+      padding: 1px 4px;
+      border: none;
+      border-radius: 4px;
+      background: var(--dm-accent-bg);
+      color: var(--dm-accent);
+      font-size: 8px;
+      line-height: 1.4;
+      cursor: pointer;
+      font-family: inherit;
+    }
+    .dm-token-badge-open { outline: 1px solid var(--dm-accent); }
+    .dm-token-badge-name {
+      font-family: inherit;
+      font-size: 9px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .dm-field-label {
+      font-size: 10px;
+      color: var(--dm-text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+    .dm-field-label-icon {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .dm-field-label-hidden { visibility: hidden; }
+    .dm-input-shell {
+      display: flex;
+      align-items: center;
+      border-radius: 5px;
+      overflow: hidden;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+    }
+    /* Bare input inside an input shell — strips its own border/background
+       so the shell renders the chrome and the input owns the text only. */
+    .dm-input-bare {
+      background: none;
+      border: none;
+      padding: 6px;
+      width: 100%;
+      min-width: 0;
+    }
+    .dm-input-unit {
+      font-size: 9px;
+      color: var(--dm-text-dim);
+      padding-right: 6px;
+      flex-shrink: 0;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    /* Leading icon inside an input shell — Figma-style replacement for
+       the text label above the field; the label text moves to `title`. */
+    .dm-input-icon {
+      display: flex;
+      align-items: center;
+      padding-left: 7px;
+      color: var(--dm-text-muted);
+      flex-shrink: 0;
+      pointer-events: none;
+    }
+    .dm-input-unit-faint { opacity: 0.4; }
+
+    /* ── Solid-fill row ──────────────────────────────────────────────
+       Figma-style inline editor: grip, swatch, colour-code field,
+       opacity %, then hover-revealed eye + delete. The whole row is
+       one input shell so it reads like a unit; the swatch click opens
+       the colour panel below the row (rendered separately). */
+    .dm-fill-row-solid {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 8px;
+      background: var(--dm-bg-secondary);
+      border: 1px solid var(--dm-separator);
+      border-radius: 5px;
+    }
+    .dm-fill-swatch {
+      width: 22px;
+      height: 22px;
+      border-radius: 4px;
+      border: 1px solid var(--dm-input-border);
+      cursor: pointer;
+      padding: 0;
+      flex-shrink: 0;
+      background-image:
+        linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.06) 75%),
+        linear-gradient(45deg, rgba(0,0,0,0.06) 25%, transparent 25%, transparent 75%, rgba(0,0,0,0.06) 75%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+    }
+    .dm-fill-code {
+      flex: 1;
+      min-width: 0;
+      background: none;
+      border: none;
+      padding: 4px 6px;
+      font-family: inherit;
+      font-size: 11px;
+      color: var(--dm-text);
+      outline: none;
+      text-transform: uppercase;
+    }
+    .dm-fill-code:focus { background: var(--dm-input-bg); border-radius: 3px; }
+    .dm-fill-opacity {
+      display: flex;
+      align-items: center;
+      width: 56px;
+      flex-shrink: 0;
+      background: var(--dm-input-bg);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 4px;
+      padding-right: 4px;
+    }
+    .dm-fill-opacity .dm-input-bare { font-size: 11px; padding: 4px 4px; text-align: right; }
+    .dm-fill-action {
+      background: none;
+      border: none;
+      color: var(--dm-text-dim);
+      cursor: pointer;
+      padding: 3px;
+      border-radius: 3px;
+      display: flex;
+      flex-shrink: 0;
+    }
+    .dm-fill-action:hover { color: var(--dm-text); background: rgba(0, 0, 0, 0.06); }
+    [data-theme="dark"] .dm-fill-action:hover { background: rgba(255, 255, 255, 0.06); }
+    /* Hover-only actions live at the right edge of the row, visible only
+       when the row itself is hovered or one of them has focus. */
+    .dm-fill-action-hover { opacity: 0; transition: opacity 0.12s ease; }
+    .dm-fill-row-solid:hover .dm-fill-action-hover,
+    .dm-fill-action-hover:focus,
+    .dm-fill-action-hover:focus-visible { opacity: 1; }
+
+    /* Read-only value cell used in place of <input> when a size field is
+       in Hug / Fill mode. Same metrics as .dm-input-bare so the shell
+       doesn't reflow when the mode toggles. */
+    .dm-input-readonly {
+      background: none;
+      border: none;
+      padding: 6px;
+      width: 100%;
+      min-width: 0;
+      color: var(--dm-text-muted);
+      font: inherit;
+      cursor: default;
+      user-select: text;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* Size-mode picker (Fixed / Hug / Fill) for W / H inputs. Sits inside
+       the input shell — borderless, faint, with a chevron on hover. */
+    .dm-size-mode {
+      appearance: none;
+      -webkit-appearance: none;
+      background: none;
+      border: none;
+      border-left: 1px solid var(--dm-input-border);
+      color: var(--dm-text-muted);
+      font-size: 9px;
+      font-family: inherit;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+      padding: 0 6px;
+      height: 100%;
+      min-height: 28px;
+      cursor: pointer;
+      outline: none;
+      flex-shrink: 0;
+      transition: color 0.12s ease, background 0.12s ease;
+    }
+    .dm-size-mode:hover { color: var(--dm-text); background: rgba(0, 0, 0, 0.03); }
+    [data-theme="dark"] .dm-size-mode:hover { background: rgba(255, 255, 255, 0.04); }
+    .dm-size-mode:focus { color: var(--dm-text); }
+    .dm-section-sub {
+      color: var(--dm-text-dim);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+      margin-top: 6px;
+    }
+    .dm-spacer { height: 10px; }
+    .dm-grid { display: grid; gap: 8px; }
+    .dm-grid-2 { grid-template-columns: repeat(2, 1fr); }
+    .dm-grid-3 { grid-template-columns: repeat(3, 1fr); }
+    .dm-grid-4 { grid-template-columns: repeat(4, 1fr); }
+    .dm-grid-12 {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 6px;
+      align-items: end;
+    }
+    .dm-route-action {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      min-width: 70px;
+      padding: 5px 7px;
+      background: none;
+      border: 1px solid var(--dm-separator);
+      border-radius: 4px;
+      color: inherit;
+      font: inherit;
+      font-size: 10px;
+      cursor: pointer;
+    }
+    .dm-route-current {
+      background: var(--dm-accent-bg);
+      border-color: var(--dm-accent-border);
+      color: var(--dm-accent);
+      cursor: default;
+    }
+    .dm-changes-grouping { position: relative; flex-shrink: 0; }
+    .dm-changes-grouping select {
+      appearance: none;
+      max-width: 110px;
+      background: var(--dm-input-bg);
+      color: var(--dm-text-secondary);
+      border: 1px solid var(--dm-input-border);
+      border-radius: 4px;
+      font: inherit;
+      font-size: 10px;
+      padding: 4px 26px 4px 8px;
+    }
+    .dm-changes-grouping > span {
+      position: absolute;
+      right: 8px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      color: var(--dm-text-secondary);
+      pointer-events: none;
+    }
+    .dm-grid-12.dm-size-row { align-items: start; }
+    .dm-grid-12 > .dm-cell { min-width: 0; }
+    .dm-grid-12 > .dm-cell-1 { grid-column: span 1; }
+    .dm-grid-12 > .dm-cell-2 { grid-column: span 2; }
+    .dm-grid-12 > .dm-cell-3 { grid-column: span 3; }
+    .dm-grid-12 > .dm-cell-4 { grid-column: span 4; }
+    .dm-grid-12 > .dm-cell-5 { grid-column: span 5; }
+    .dm-grid-12 > .dm-cell-6 { grid-column: span 6; }
+    .dm-grid-12 > .dm-cell-7 { grid-column: span 7; }
+    .dm-grid-12 > .dm-cell-8 { grid-column: span 8; }
+    .dm-grid-12 > .dm-cell-9 { grid-column: span 9; }
+    .dm-grid-12 > .dm-cell-10 { grid-column: span 10; }
+    .dm-grid-12 > .dm-cell-11 { grid-column: span 11; }
+    .dm-grid-12 > .dm-cell-12 { grid-column: span 12; }
+
+    /* ── Hover indicator ── */
+    .dm-hover-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 9px;
+      font-weight: 500;
+    }
+    .dm-hover-indicator.hovering {
+      background: rgba(251,191,36,0.12);
+      color: #FBBF24;
+    }
+    .dm-hover-indicator.selected {
+      background: rgba(79,158,255,0.12);
+      color: #4F9EFF;
+    }
+  </style>
+</head>
+<body>
+  <div id="dm-root"></div>
+  <script src="/axon-bridge.js"></script>
+  <script src="/sidepanel.js"></script>
+</body>
+</html>

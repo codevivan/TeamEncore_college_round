@@ -1,0 +1,78 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_title": "Axon Design Studio"
+   },
+   "background": {
+      "scripts": [ "background.js" ],
+      "service_worker": "background.js",
+      "type": "module"
+   },
+   "browser_specific_settings": {
+      "gecko": {
+         "data_collection_permissions": {
+            "optional": [ "technicalAndInteraction" ],
+            "required": [ "locationInfo" ]
+         },
+         "id": "sandeepbaskaran98@gmail.com",
+         "strict_min_version": "121.0"
+      }
+   },
+   "commands": {
+      "capture-screenshot": {
+         "description": "Capture with Axon Design Studio",
+         "suggested_key": {
+            "default": "Alt+S",
+            "mac": "Alt+S"
+         }
+      },
+      "toggle-design-mode": {
+         "description": "Toggle Axon Design Studio",
+         "suggested_key": {
+            "default": "Alt+D",
+            "mac": "Alt+D"
+         }
+      }
+   },
+   "content_scripts": [ {
+      "js": [ "content.js" ],
+      "matches": [ "<all_urls>" ],
+      "run_at": "document_idle"
+   } ],
+   "content_security_policy": {
+      "extension_pages": "script-src 'self'; object-src 'self'; base-uri 'self'"
+   },
+   "description": "Axon Design Studio — Visual DOM editor, real-time team collaboration, and digital workers connected to Axon Control Plane",
+   "host_permissions": [ "<all_urls>" ],
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApnL4Yrc/TaOLc7Bx5jfx+r0sUxs+Z6A/5vQAtsPF+vAddmqCHGKxu+cr4/7viDmm8o1pqocMPe1Y0d+UgFVqzD6dbXqZvIZn/aVTMv8LH0AlxsYeT+Xw+gdoVJESkEOt9ue8Mobk1p1YhjxySnX0BYlPAjalqTrQdywwwb57bw9eYTRhdABGYomR06V2gKbgSnXgZqXQB4vcrVnn3ckh9i0WfJm3xskSAaxRWF5PVuu+yAm/LMa8L3vJUn6vh4Ym6GDMycI6ldSzDWhVwscrovTDthOrdEeZsVmghJgxsCLpR6rnPqq1ICg/OwwBK8Bs0iqLii4FXpIyzMzol3qY8wIDAQAB",
+   "manifest_version": 3,
+   "name": "Axon Design Studio",
+   "permissions": [ "activeTab", "storage", "scripting", "tabs", "sidePanel" ],
+   "side_panel": {
+      "default_path": "sidepanel/index.html"
+   },
+   "sidebar_action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_panel": "sidepanel/index.html",
+      "default_title": "Axon Design Studio"
+   },
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "3.0.0",
+   "web_accessible_resources": [ {
+      "matches": [ "<all_urls>" ],
+      "resources": [ "icons/icon48.png", "axon-bridge.js" ]
+   } ]
+}
